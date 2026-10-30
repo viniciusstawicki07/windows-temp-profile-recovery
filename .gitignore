@@ -1,0 +1,18 @@
+# Never commit end-user profile data, registry exports or backup artifacts.
+*.reg
+*.dat
+*.DAT
+*.LOG1
+*.LOG2
+*.blf
+*.regtrans-ms
+*.evtx
+*.log
+*.zip
+*.7z
+*.bak
+Backups/
+backup/
+ProfileList*
+*.user
+.vscode/

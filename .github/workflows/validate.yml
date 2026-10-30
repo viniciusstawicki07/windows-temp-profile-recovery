@@ -1,0 +1,13 @@
+name: Validate PowerShell syntax
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  syntax:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse script (no execution)
+        shell: powershell
+        run: .\tests\Test-Syntax.ps1
