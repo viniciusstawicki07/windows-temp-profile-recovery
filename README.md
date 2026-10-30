@@ -38,6 +38,26 @@ O caso que motivou este repositório foi corrigido restaurando as permissões do
 
 Baixe o repositório (Git clone ou ZIP), confira o conteúdo do script e abra o **Windows PowerShell como Administrador**. Não use `iex` para executar diretamente scripts da internet. Substitua `EXEMPLO\usuario` e `C:\Users\usuario` pelos valores da máquina.
 
+### Se a execução for bloqueada por falta de assinatura digital
+
+Se aparecer a mensagem **"o arquivo não está assinado digitalmente"**, você pode liberar a execução **somente na sessão atual** do PowerShell, desde que isso seja permitido pela política de segurança da sua organização.
+
+Na **mesma janela** de PowerShell aberta como Administrador, execute:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+```
+
+Depois, execute normalmente o comando de diagnóstico ou de correção abaixo. O parâmetro `-Scope Process` **não altera permanentemente** a política de execução do Windows: a liberação deixa de valer ao fechar essa sessão. Use esta opção **apenas após conferir a origem e o conteúdo do script**; ela não verifica se um script é seguro.
+
+Se continuar bloqueado, confira as políticas aplicadas:
+
+```powershell
+Get-ExecutionPolicy -List
+```
+
+As políticas `MachinePolicy` e `UserPolicy`, geralmente definidas por GPO, têm precedência sobre `Process`. **Não tente contornar uma restrição imposta pela organização**; consulte o administrador responsável.
+
 **1. Diagnóstico (não modifica arquivos nem Registro):**
 
 ```powershell
@@ -52,7 +72,7 @@ Baixe o repositório (Git clone ou ZIP), confira o conteúdo do script e abra o 
 
 Após o backup, digite **`REPAIR`** quando solicitado para autorizar as alterações. Qualquer outra resposta cancela a correção sem alterar os arquivos originais ou o Registro. O backup já criado permanece para auditoria.
 
-> Se o PowerShell bloquear a execução por política de scripts, siga a política de segurança da sua organização. **Não é necessário desativar o antivírus, executar PowerShell com bypass global ou baixar executáveis adicionais.**
+> **Segurança:** não é necessário desativar o antivírus, alterar globalmente a política de execução ou baixar executáveis adicionais. O `Bypass` mostrado acima é temporário e não substitui a verificação do script.
 
 **3. Reinicie e entre com a conta recuperada. Valide:**
 
